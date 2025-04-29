@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Choppy</title>
+    <link rel="stylesheet" href="../pages/css/styles.css" />
+    <script
+      src="https://kit.fontawesome.com/yourcode.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body class="body-container">
+    <div id="cartModal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close-button" id="closeModal">&times;</span>
+        <h2 style="text-align: center">Your Cart</h2>
+        <div class="cart-list-container">
+          <!-- <div class="cart-card" data-id="${cartItem.id}">
+            <div class="cart-card-details">
+              <div class="cart-card-img">
+                <img
+                  src="https://www.recipesbynora.com/wp-content/uploads/2023/10/Siomai-with-Pork-and-Shrimp-featured-image.jpg"
+                  alt="Logo"
+                  class="logo"
+                />
+              </div>
+              <div class="cart-card-label">
+                <div>LENOVO</div>
+                <div>PHP37,000</div>
+              </div>
+            </div>
+            <div class="cart-card-info">
+              <div class="cart-card-quantity">
+                <div class="cart-card-quantity-value">1</div>
+              </div>
+              <div class="cart-card-buttons">
+                <div class="cart-card-remove-button" data-id="${cartItem.id}">
+                  REMOVE
+                </div>
+                <div class="cart-card-add-button" data-id="${cartItem.id}">
+                  ADD
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <div class="cart-list" id="cartList"></div>
+        </div>
+
+        <div class="modal-footer">
+          <div class="total-price-container">
+            <div>
+              <strong>Total:</strong>
+              <span id="totalPrice"></span>
+            </div>
+          </div>
+
+          <div>
+            <button id="checkoutButton" class="checkout-btn">Checkout</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar-container">
+      <div class="logo-container">
+        <img src="../assets/Shopee.png" alt="Logo" class="logo" />
+      </div>
+      <div class="cart-icon" id="openCartBtn">
+        <i class="fas fa-shopping-cart"></i>
+      </div>
+    </div>
+    <div class="carousel">
+      <div class="slides">
+        <img src="../assets/banner-1.png" class="slide" alt="Slide 1" />
+        <img src="../assets/banner-1.png" class="slide" alt="Slide 2" />
+        <img src="../assets/banner-1.png" class="slide" alt="Slide 3" />
+      </div>
+      <button class="prev">&#10094;</button>
+      <button class="next">&#10095;</button>
+    </div>
+    <main class="main-container">
+      <div class="product-list" id="productList"></div>
+    </main>
+    <script src="../pages/js/script.js"></script>
+  </body>
+</html>
