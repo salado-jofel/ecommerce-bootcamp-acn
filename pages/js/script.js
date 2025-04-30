@@ -3,8 +3,9 @@ var products = [
     id: 1,
     name: "Xiaomai",
     brand: "Xiaomi",
-    price: "21,000",
+    price: 21000,
     quantity: 0,
+    subtotal: 0,
     description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
     consectetur, ante id gravida rutrum, augue odio ultricies
     magna, eu rutrum enim ligula ac risus.`,
@@ -16,8 +17,9 @@ var products = [
     id: 2,
     name: "Meowa",
     brand: "Apple",
-    price: "87,000",
+    price: 87000,
     quantity: 0,
+    subtotal: 0,
     description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
     consectetur, ante id gravida rutrum, augue odio ultricies
     magna, eu rutrum enim ligula ac risus.`,
@@ -28,8 +30,9 @@ var products = [
     id: 3,
     name: "Ratomobile",
     brand: "RAT",
-    price: "37,000",
+    price: 37000,
     quantity: 0,
+    subtotal: 0,
     description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
     consectetur, ante id gravida rutrum, augue odio ultricies
     magna, eu rutrum enim ligula ac risus.`,
@@ -37,11 +40,12 @@ var products = [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsEnfLzDCfH2saJPsv55xKqFMrjzuQXpQQ4Q&s",
   },
   {
-    id: 3,
+    id: 4,
     name: "Ratomobile",
     brand: "RAT",
-    price: "37,000",
+    price: 37000,
     quantity: 0,
+    subtotal: 0,
     description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In
     consectetur, ante id gravida rutrum, augue odio ultricies
     magna, eu rutrum enim ligula ac risus.`,
@@ -78,7 +82,7 @@ function indexProducts() {
                 </div>
                 <div class="product-label">
                   <h3>Price:</h3>
-                  <p>${product.price}</p>
+                  <p>${product.price.toLocaleString()}</p>
                   <p>PHP</p>
                 </div>
                 <div class="product-label">
@@ -131,45 +135,61 @@ function indexCarts() {
   const cartMap = {};
 
   for (let i = 0; i < cart.length; i++) {
-    const item = cart[i];
+    var item = cart[i];
 
     if (cartMap[item.id]) {
-      cartMap[item.id].quantity += 1;
+      cartMap[item.id].quantity = cartMap[item.id].quantity + 1;
+      cartMap[item.id].subtotal =
+        cartMap[item.id].subtotal + cartMap[item.id].price;
     } else {
-      cartMap[item.id] = { ...item, quantity: 1 };
+      cartMap[item.id] = {
+        ...item,
+        quantity: 1,
+        subtotal: item.price,
+      };
     }
   }
+  if (cart.length == 0) {
+    cartList.innerHTML = `<div class="cart-empty">Your cart is empty.</div>`;
+  } else {
+    cartList.innerHTML = Object.values(cartMap)
+      .map((cartItem) => {
+        totalPrice = totalPrice + cartItem.price * cartItem.quantity;
+        return `
+  <div class="cart-card" data-id="${cartItem.id}">
+    <div class="cart-card-details">
+      <div class="cart-card-img">
+        <img src="${cartItem.image}" alt="Logo" class="logo" />
+      </div>
+      <div class="cart-card-label">
+        <div>${cartItem.name}</div>
+        <div>${cartItem.price.toLocaleString()}</div>
+      </div>
+    </div>
+    <div class="cart-card-info">
+    <div class="cart-card-status">
+      <div class="cart-card-quantity">
+       ${cartItem.quantity}
+      </div>
+       <div class="cart-card-subtotal">
+     Subtotal: ${cartItem.subtotal.toLocaleString()}
+      </div>
+    </div>
+    
+      <div class="cart-card-buttons">
+        <div class="cart-card-remove-button" data-id="${
+          cartItem.id
+        }">REMOVE</div>
+       <div class="cart-card-add-button" data-id="${cartItem.id}">ADD</div>
+      </div>
+    </div>
+  </div>
+`;
+      })
+      .join("");
+  }
 
-  cartList.innerHTML = Object.values(cartMap)
-    .map((cartItem) => {
-      totalPrice +=
-        parseFloat(cartItem.price.replace(/[^0-9.-]+/g, "")) *
-        cartItem.quantity;
-
-      return `
-        <div class="cart-card" data-id="${cartItem.id}">
-          <div class="cart-card-details">
-            <div class="cart-card-img">
-              <img src="${cartItem.image}" alt="Logo" class="logo" />
-            </div>
-            <div class="cart-card-label">
-              <div>${cartItem.name}</div>
-              <div>${cartItem.price}</div>
-            </div>
-          </div>
-          <div class="cart-card-info">
-            <div class="cart-card-quantity">
-              <div class="cart-card-quantity-value">${cartItem.quantity}</div>
-            </div>
-            <div class="cart-card-buttons">
-              <div class="cart-card-remove-button" data-id="${cartItem.id}">REMOVE</div>
-             <div class="cart-card-add-button" data-id="${cartItem.id}">ADD</div>
-            </div>
-          </div>
-        </div>
-      `;
-    })
-    .join("");
+  var cartSize = Object.keys(cartMap).length;
 
   document.getElementById(
     "totalPrice"
@@ -210,9 +230,13 @@ function indexCarts() {
       indexCarts();
     });
   });
-}
 
-indexCarts();
+  document.getElementById(
+    "cartBadge"
+  ).innerHTML = `<div class="cart-badge" style="${
+    cartSize == 0 && "display: none;"
+  }">${cartSize} </div>`;
+}
 
 const cartModal = document.getElementById("cartModal");
 const openCartBtn = document.getElementById("openCartBtn");
